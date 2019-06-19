@@ -25,3 +25,5 @@ Winforms Sample to demonstrate how to use the Microsoft Graph SDK, and the Micro
 
 [https://docs.microsoft.com/en-us/graph/query-parameters](https://docs.microsoft.com/en-us/graph/query-parameters)
 
+[https://docs.microsoft.com/en-us/graph/sdks/sdk-installation](https://docs.microsoft.com/en-us/graph/sdks/sdk-installation)
+
