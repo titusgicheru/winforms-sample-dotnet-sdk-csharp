@@ -16,3 +16,12 @@ Winforms Sample to demonstrate how to use the Microsoft Graph SDK, and the Micro
 4. Select the **Add a Redirect URI** link. On the **Redirect URIs** page, locate the **Suggested Redirect URIs for public clients (mobile, desktop)** section. Select the URI that begins with `msal` **and** the **urn:ietf:wg:oauth:2.0:oob** URI. 
  
 5. Open the sample solution in Visual Studio and then open the **App.config** file. Change the **clientId** string to the **Application (client) ID** value. 
+
+## Resources
+
+[https://developer.microsoft.com/en-us/graph/get-started](https://developer.microsoft.com/en-us/graph/get-started)
+
+[https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS](https://docs.microsoft.com/en-us/graph/sdks/choose-authentication-providers?tabs=CS)
+
+[https://docs.microsoft.com/en-us/graph/query-parameters](https://docs.microsoft.com/en-us/graph/query-parameters)
+
