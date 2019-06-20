@@ -8,22 +8,24 @@
  * Microsoft.Graph.Auth v0.1.0-preview.2
  *************************************************************************/
 
-using GraphLib;
-using MetroFramework.Controls;
-using Microsoft.Graph;
 using System;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Linq;
-using System.Drawing;
-using System.IO;
-using System.Drawing.Drawing2D;
+using GraphApp.Properties;
+using GraphLib;
+using MetroFramework.Controls;
+using MetroFramework.Forms;
+using Microsoft.Graph;
 
 namespace GraphApp
 {
-    public partial class frmMain : MetroFramework.Forms.MetroForm
+    public partial class frmMain : MetroForm
     {
-        private static GraphServiceClient graphClient = null;
+        private static GraphServiceClient graphClient;
         private static MetroProgressSpinner _loader;
         private static MetroLabel _userDisplayLabel;
         private static PictureBox _pictureBoxProfilePhoto;
@@ -71,14 +73,7 @@ namespace GraphApp
             _loader.Spinning = false;
             _loader.Visible = false;
 
-            if (graphClient != null)
-            {
-                metroButtonSignIn.Text = "Refresh";
-            }
-            else
-            {
-                metroButtonSignIn.Text = "Sign In";
-            }
+            metroButtonSignIn.Text = graphClient != null ? "Refresh" : "Sign In";
         }
 
         private void ClearControls()
@@ -126,12 +121,11 @@ namespace GraphApp
 
         private static async Task<User> GetMeAsync()
         {
-            User currentUser = null;
             try
             {
                 graphClient = GraphServiceClientProvider.GetAuthenticatedClient();
                 // Request to get the current logged in user object from Microsoft Graph
-                currentUser = await graphClient.Me.Request().GetAsync();
+                var currentUser = await graphClient.Me.Request().GetAsync();
                 return currentUser;
             }
 
@@ -144,11 +138,10 @@ namespace GraphApp
 
         private static async Task<Stream> GetMePhotoAsync()
         {
-            Stream profilePhotoStream = null;
             try
             {
                 graphClient = GraphServiceClientProvider.GetAuthenticatedClient();
-                profilePhotoStream = await graphClient.Me.Photo.Content.Request().GetAsync();
+                var profilePhotoStream = await graphClient.Me.Photo.Content.Request().GetAsync();
                 return profilePhotoStream;
             }
 
@@ -172,11 +165,10 @@ namespace GraphApp
 
         private static async Task<IUserMessagesCollectionPage> GetMessagesAsync()
         {
-            IUserMessagesCollectionPage messages = null;
             try
             {
                 graphClient = GraphServiceClientProvider.GetAuthenticatedClient();
-                messages = await graphClient.Me
+                var messages = await graphClient.Me
                     .Messages
                     .Request()
                     .Select("From,Subject,IsRead,IsDraft,HasAttachments,CreatedDateTime")
@@ -210,12 +202,10 @@ namespace GraphApp
 
         private static async Task<IDriveRecentCollectionPage> GetFilesAsync()
         {
-            IDriveRecentCollectionPage driveRecentCollectionPage = null;
-
             try
             {
                 graphClient = GraphServiceClientProvider.GetAuthenticatedClient();
-                driveRecentCollectionPage = await graphClient.Me.Drive.Recent().Request().GetAsync();
+                var driveRecentCollectionPage = await graphClient.Me.Drive.Recent().Request().GetAsync();
                 return driveRecentCollectionPage;
             }
             catch (ServiceException e)
@@ -236,27 +226,31 @@ namespace GraphApp
             // 
             // pictureBoxDriveControl
             // 
-            PictureBox pictureBoxDriveControl = new PictureBox();
-            pictureBoxDriveControl.BackgroundImage = fileType;
-            pictureBoxDriveControl.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            pictureBoxDriveControl.Location = new System.Drawing.Point(50, 19);
-            pictureBoxDriveControl.Name = "pictureBoxDriveControl";
-            pictureBoxDriveControl.Size = new System.Drawing.Size(156, 168);
-            pictureBoxDriveControl.TabIndex = 1;
-            pictureBoxDriveControl.TabStop = false;
+            PictureBox pictureBoxDriveControl = new PictureBox
+            {
+                BackgroundImage = fileType,
+                BackgroundImageLayout = ImageLayout.Zoom,
+                Location = new Point(50, 19),
+                Name = "pictureBoxDriveControl",
+                Size = new Size(156, 168),
+                TabIndex = 1,
+                TabStop = false
+            };
 
             // 
             // metroLabelDriveControl
             // 
-            Label metroLabelDriveControl = new Label();
-            metroLabelDriveControl.AutoSize = false;
-            metroLabelDriveControl.ForeColor = System.Drawing.Color.White;
-            metroLabelDriveControl.BackColor = System.Drawing.Color.Transparent;
-            metroLabelDriveControl.Location = new System.Drawing.Point(8, 195);
-            metroLabelDriveControl.Name = "mDC" + id;
-            metroLabelDriveControl.Size = new System.Drawing.Size(240, 61);
-            metroLabelDriveControl.Text = fileName;
-            metroLabelDriveControl.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            Label metroLabelDriveControl = new Label
+            {
+                AutoSize = false,
+                ForeColor = Color.White,
+                BackColor = Color.Transparent,
+                Location = new Point(8, 195),
+                Name = "mDC" + id,
+                Size = new Size(240, 61),
+                Text = fileName,
+                TextAlign = ContentAlignment.TopCenter
+            };
 
             // 
             // panelDriveControl
@@ -264,9 +258,9 @@ namespace GraphApp
             Panel panelDriveControl = new Panel();
             panelDriveControl.Controls.Add(pictureBoxDriveControl);
             panelDriveControl.Controls.Add(metroLabelDriveControl);
-            panelDriveControl.BackColor = System.Drawing.Color.Transparent;
+            panelDriveControl.BackColor = Color.Transparent;
             panelDriveControl.Name = "pDC" + id;
-            panelDriveControl.Size = new System.Drawing.Size(256, 266);
+            panelDriveControl.Size = new Size(256, 266);
             panelDriveControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 
 
@@ -287,21 +281,21 @@ namespace GraphApp
             switch (exetension)
             {
                 case "xlx":
-                    return Properties.Resources.excel;
+                    return Resources.excel;
                 case "xlsx":
-                    return Properties.Resources.excel;
+                    return Resources.excel;
                 case "doc":
-                    return Properties.Resources.word;
+                    return Resources.word;
                 case "docx":
-                    return Properties.Resources.word;
+                    return Resources.word;
                 case "ppt":
-                    return Properties.Resources.powerpoint;
+                    return Resources.powerpoint;
                 case "pptx":
-                    return Properties.Resources.powerpoint;
+                    return Resources.powerpoint;
                 case "one":
-                    return Properties.Resources.onenote;
+                    return Resources.onenote;
                 default:
-                    return Properties.Resources.unknown;
+                    return Resources.unknown;
             }
         }
         #endregion               
