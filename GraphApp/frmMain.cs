@@ -171,7 +171,7 @@ namespace GraphApp
                 var messages = await graphClient.Me
                     .Messages
                     .Request()
-                    .Select("From,Subject,IsRead,IsDraft,HasAttachments,CreatedDateTime")
+                    .Select("From,Subject,IsRead,IsDraft, HasAttachments,CreatedDateTime")
                     .GetAsync();
                 return messages;
             }
