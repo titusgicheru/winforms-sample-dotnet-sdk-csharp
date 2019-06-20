@@ -121,7 +121,7 @@ namespace GraphApp
         private static async Task BindProfilePhoto()
         {
             var photoStream = await GetMePhotoAsync();
-            _pictureBoxProfilePhoto.BackgroundImage = new Bitmap(photoStream);
+            if (photoStream != null) _pictureBoxProfilePhoto.BackgroundImage = new Bitmap(photoStream);
         }
 
         private static async Task<User> GetMeAsync()
@@ -137,7 +137,7 @@ namespace GraphApp
 
             catch (ServiceException e)
             {
-                MessageBox.Show("We could not get the current user: " + e.Error.Message, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+              MessageBox.Show("We could not get the current user: " + e.Error.Message, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }
@@ -154,7 +154,7 @@ namespace GraphApp
 
             catch (ServiceException e)
             {
-                MessageBox.Show("We could not get the current user photo: " + e.Error.Message, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //MessageBox.Show("We could not get the current user photo: " + e.Error.Message, "Error Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return null;
             }
         }
